@@ -1607,6 +1607,20 @@ public class InputMethodService extends AbstractInputMethodService {
             }
             return false;
         }
+
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                if(isInputViewShown()) {
+                        sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
+                        return true;
+                }
+        }
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                if(isInputViewShown()) {
+                        sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT);
+                        return true;
+                }
+        }
+
         return doMovementKey(keyCode, event, MOVEMENT_DOWN);
     }
 
@@ -1651,6 +1665,12 @@ public class InputMethodService extends AbstractInputMethodService {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.isTracking()
                 && !event.isCanceled()) {
             return handleBack(true);
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                if(isInputViewShown()) {
+                        return true;
+                }
         }
         
         return doMovementKey(keyCode, event, MOVEMENT_UP);
