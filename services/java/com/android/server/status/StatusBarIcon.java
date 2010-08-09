@@ -140,9 +140,7 @@ class StatusBarIcon {
                 mNumberView.setTextColor(batteryPercentColor);
                 mNumberView.setTextSize(12);
 
-                if (data.number == 100) {
-                    nv.setText("" + 99);
-                } else if ((data.number > 0)&&(data.number < 100)) {
+                if ((data.number > 0)&&(data.number < 100)) {
                     nv.setText("" + data.number);
                 } else {
                     nv.setText("");

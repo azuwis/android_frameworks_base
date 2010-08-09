@@ -656,7 +656,11 @@ public class StatusBarPolicy {
         if (plugged) {
             mBatteryData.number = -1;
         } else {
-            mBatteryData.number = level;
+            if (level == 100) {
+                mBatteryData.number = 99;
+            } else {
+                mBatteryData.number = level;
+            }
         }
 
         mService.updateIcon(mBatteryIcon, mBatteryData, null);
