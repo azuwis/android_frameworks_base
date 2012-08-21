@@ -2349,6 +2349,12 @@ public final class Settings {
         public static final String NAV_BAR_STATUS = "nav_bar_status";
 
         /**
+         * Navigation bar auto toggle
+         * @hide
+         */
+        public static final String NAV_BAR_AUTO_TOGGLE = "nav_bar_auto_toggle";
+
+        /**
          * Navigation bar, separate menu button in TabUI, whether to show or hide
          * @hide
          */
