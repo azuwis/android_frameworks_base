@@ -44,6 +44,7 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.android.internal.R;
+import android.util.HanziToPinyin;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -227,6 +228,10 @@ public class BluetoothA2dpService extends IBluetoothA2dp.Stub {
                         mArtistName = DEFAULT_METADATA_STRING;
                     if (mAlbumName == null)
                         mAlbumName = DEFAULT_METADATA_STRING;
+
+                    String mTrackNamePinyin = HanziToPinyin.getInstance().getFullPinYin(mTrackName);
+                    if (!mTrackNamePinyin.isEmpty())
+                        mTrackName = mTrackNamePinyin;
 
                     long extra = intent.getLongExtra("ListSize", 0);
                     if (extra < 0)
