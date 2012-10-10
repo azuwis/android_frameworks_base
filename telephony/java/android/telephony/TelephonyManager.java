@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.android.internal.telephony.IPhoneSubInfo;
@@ -486,6 +487,17 @@ public class TelephonyManager {
 
     //
     //
+    // Unlock Google Play
+    //
+    //
+
+    private static final String GOOGLE_PLAY_PKG_NAME = "com.android.vending";
+    private static final String GOOGLE_PLAY_OP_NAME = "Verizon";
+    private static final String GOOGLE_PLAY_OP_NUM = "310004";
+    private static final String GOOGLE_PLAY_COUNTRY = "us";
+
+    //
+    //
     // Current Network
     //
     //
@@ -498,6 +510,11 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperatorName() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_OP_NAME;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_ALPHA);
     }
 
@@ -509,6 +526,11 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperator() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_OP_NUM;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_NUMERIC);
     }
 
@@ -531,6 +553,11 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkCountryIso() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_COUNTRY;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_ISO_COUNTRY);
     }
 
@@ -794,6 +821,11 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperator() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_OP_NUM;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC);
     }
 
@@ -805,6 +837,11 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperatorName() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_OP_NAME;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_ALPHA);
     }
 
@@ -812,6 +849,11 @@ public class TelephonyManager {
      * Returns the ISO country code equivalent for the SIM provider's country code.
      */
     public String getSimCountryIso() {
+        if (Settings.System.getInt(sContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+            if (GOOGLE_PLAY_PKG_NAME.equals(packageName))
+                return GOOGLE_PLAY_COUNTRY;
+        }
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_ISO_COUNTRY);
     }
 
