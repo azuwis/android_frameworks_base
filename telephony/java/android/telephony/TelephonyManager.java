@@ -364,6 +364,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperatorName() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "Verizon";
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_ALPHA);
     }
 
@@ -375,6 +378,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperator() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "310004";
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_NUMERIC);
     }
 
@@ -397,6 +403,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkCountryIso() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "us";
         return SystemProperties.get(TelephonyProperties.PROPERTY_OPERATOR_ISO_COUNTRY);
     }
 
@@ -652,6 +661,9 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperator() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "310004";
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC);
     }
 
@@ -663,6 +675,9 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperatorName() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "Verizon";
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_ALPHA);
     }
 
@@ -670,6 +685,9 @@ public class TelephonyManager {
      * Returns the ISO country code equivalent for the SIM provider's country code.
      */
     public String getSimCountryIso() {
+        String packageName = sContext != null ? sContext.getPackageName() : "<unknown>";
+        if ("com.android.vending".equals(packageName))
+            return "us";
         return SystemProperties.get(TelephonyProperties.PROPERTY_ICC_OPERATOR_ISO_COUNTRY);
     }
 
