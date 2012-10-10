@@ -2646,6 +2646,15 @@ public final class Settings {
         public static final String ENABLE_MWI_NOTIFICATION = "enable_mwi_notification";
 
         /**
+         * Unlock Google Play
+         * 0 = no
+         * 1 = yes
+         * @hide
+         */
+        public static final String UNLOCK_GOOGLE_PLAY = "unlock_google_play";
+        public static final String GOOGLE_PLAY_PACKAGE = "google_play_package";
+
+        /**
          * Show pointer location on screen?
          * 0 = no
          * 1 = yes

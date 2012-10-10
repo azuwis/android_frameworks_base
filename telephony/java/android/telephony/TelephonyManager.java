@@ -44,7 +44,10 @@ import com.android.internal.telephony.TelephonyProperties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -593,9 +596,38 @@ public class TelephonyManager {
 
     //
     //
+    // Unlock Google Play
+    //
+    //
+
+    private static final String GOOGLE_PLAY_PKG_DEFAULT = "com.google.android.gms";
+    private static final String GOOGLE_PLAY_COUNTRY = "us";
+    private static final String GOOGLE_PLAY_OP_NUM = "310004";
+    private static final String GOOGLE_PLAY_OP_ALP = "Verizon";
+
+    //
+    //
     // Current Network
     //
     //
+
+    private boolean shouldUnlockGooglePlay() {
+        if (mContext == null) {
+            return false;
+        }
+        if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
+            String flatGooglePlayPackage = Settings.System.getString(mContext.getContentResolver(), Settings.System.GOOGLE_PLAY_PACKAGE);
+            if (flatGooglePlayPackage == null) {
+                flatGooglePlayPackage = GOOGLE_PLAY_PKG_DEFAULT;
+            }
+            Set<String> googlePlayPackage = new HashSet<String>(Arrays.asList(flatGooglePlayPackage.split("\\|")));
+            String packageName = mContext.getPackageName();
+            boolean result = googlePlayPackage.contains(packageName);
+            //Rlog.d(TAG, "shouldUnlockGooglePlay " + packageName + " " + result);
+            return result;
+        }
+        return false;
+    }
 
     /**
      * Returns the alphabetic name of current registered operator.
@@ -605,6 +637,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperatorName() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_OP_ALP;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_OPERATOR_ALPHA,
                 getDefaultSubscription(), "");
     }
@@ -617,6 +652,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkOperator() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_OP_NUM;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_OPERATOR_NUMERIC,
                 getDefaultSubscription(), "");
     }
@@ -641,6 +679,9 @@ public class TelephonyManager {
      * on a CDMA network).
      */
     public String getNetworkCountryIso() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_COUNTRY;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_OPERATOR_ISO_COUNTRY,
                 getDefaultSubscription(), "");
     }
@@ -989,6 +1030,9 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperator() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_OP_NUM;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_ICC_OPERATOR_NUMERIC,
                 getDefaultSubscription(), "");
     }
@@ -1001,6 +1045,9 @@ public class TelephonyManager {
      * @see #getSimState
      */
     public String getSimOperatorName() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_OP_ALP;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_ICC_OPERATOR_ALPHA,
                 getDefaultSubscription(), "");
     }
@@ -1009,6 +1056,9 @@ public class TelephonyManager {
      * Returns the ISO country code equivalent for the SIM provider's country code.
      */
     public String getSimCountryIso() {
+        if (shouldUnlockGooglePlay()) {
+            return GOOGLE_PLAY_COUNTRY;
+        }
         return getTelephonyProperty(TelephonyProperties.PROPERTY_ICC_OPERATOR_ISO_COUNTRY,
                 getDefaultSubscription(), "");
     }
