@@ -85,6 +85,7 @@ public class NavbarEditor implements OnTouchListener {
     public static final String NAVBAR_RECENT = "recent";
     public static final String NAVBAR_CONDITIONAL_MENU = "menu0";
     public static final String NAVBAR_ALWAYS_MENU = "menu1";
+    public static final String NAVBAR_POWER = "power";
     public static final String NAVBAR_MENU_BIG = "menu2";
 
     static {
@@ -97,6 +98,9 @@ public class NavbarEditor implements OnTouchListener {
         buttonMap.put(NAVBAR_ALWAYS_MENU,
                 new ButtonInfo(R.string.navbar_menu_always_button, R.string.accessibility_menu, KeyEvent.KEYCODE_MENU, R.drawable.ic_sysbar_menu,
                         R.drawable.ic_sysbar_menu_land, R.drawable.ic_sysbar_menu));
+        buttonMap.put(NAVBAR_POWER,
+                new ButtonInfo(R.string.navbar_power_button, R.string.accessibility_power, KeyEvent.KEYCODE_POWER, R.drawable.ic_sysbar_power,
+                        R.drawable.ic_sysbar_power, android.R.color.transparent));
         buttonMap.put(NAVBAR_MENU_BIG,
                 new ButtonInfo(R.string.navbar_menu_big_button, R.string.accessibility_menu, KeyEvent.KEYCODE_MENU, R.drawable.ic_sysbar_menu_big,
                         R.drawable.ic_sysbar_menu_big_land, 0));
