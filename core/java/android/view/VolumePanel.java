@@ -768,6 +768,9 @@ public class VolumePanel extends Handler implements OnSeekBarChangeListener, Vie
 
     protected void onPlaySound(int streamType, int flags) {
 
+        if (true)
+            return;
+
         if (hasMessages(MSG_STOP_SOUNDS)) {
             removeMessages(MSG_STOP_SOUNDS);
             // Force stop right now
