@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import android.app.AppGlobals;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.IIntentReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,9 +35,11 @@ import android.os.Process;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.UserId;
+// BEGIN privacy-added
+import android.privacy.surrogate.PrivacyActivityManagerService;
+// END privacy-added
 import android.util.EventLog;
 import android.util.Slog;
-
 /**
  * BROADCASTS
  *
@@ -444,6 +447,17 @@ public class BroadcastQueue {
         }
     }
 
+    /**
+     * {@hide} 
+     * Copy of context for privacy protection
+     */
+    Context mContext = null;
+
+    /** {@hide} */
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
     final void processNextBroadcast(boolean fromMsg) {
         synchronized(mService) {
             BroadcastRecord r;
@@ -623,6 +637,9 @@ public class BroadcastQueue {
             }
 
             Object nextReceiver = r.receivers.get(recIdx);
+            // BEGIN privacy-added
+            enforcePrivacyPermission(nextReceiver, r);
+            // END privacy-added
             if (nextReceiver instanceof BroadcastFilter) {
                 // Simple case: this is a registered receiver who gets
                 // a direct call.
@@ -786,6 +803,33 @@ public class BroadcastQueue {
             mPendingBroadcastRecvIndex = recIdx;
         }
     }
+
+    // BEGIN privacy-added
+    private void enforcePrivacyPermission(Object nextReceiver, BroadcastRecord r) {
+        if (mContext != null && r != null && r.intent != null && r.intent.getAction() != null) {
+            
+            String packageName = null;
+            int uid = -1;
+            try { // try to get intent receiver information
+                if (nextReceiver instanceof BroadcastFilter) {
+                    packageName = ((BroadcastFilter) nextReceiver).receiverList.app.info.packageName;
+                    uid = ((BroadcastFilter) nextReceiver).receiverList.app.info.uid;
+                } else if (nextReceiver instanceof ResolveInfo) {
+                    packageName = ((ResolveInfo) nextReceiver).activityInfo.applicationInfo.packageName;
+                    uid = ((ResolveInfo) nextReceiver).activityInfo.applicationInfo.uid;
+                }
+            } catch (Exception e) {
+                // if above information is not available, exception will be thrown
+                // do nothing, this is not our intent
+                return;
+            }
+            
+            if (packageName != null && uid != -1) {
+                PrivacyActivityManagerService.enforcePrivacyPermission(packageName, uid, r.intent, mContext, r.receivers.size());
+            }
+        }
+    }
+    // END privacy-added
 
     final void setBroadcastTimeoutLocked(long timeoutTime) {
         if (! mPendingBroadcastTimeoutMessage) {

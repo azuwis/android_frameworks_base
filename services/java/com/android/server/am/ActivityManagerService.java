@@ -12794,6 +12794,7 @@ public final class ActivityManagerService extends ActivityManagerNative
                                 r.resultExtras, r.resultAbort, true);
                         if (doNext) {
                             doTrim = true;
+                            r.queue.setContext(mContext);
                             r.queue.processNextBroadcast(false);
                         }
                     }
@@ -13301,6 +13302,7 @@ public final class ActivityManagerService extends ActivityManagerNative
             }
 
             if (doNext) {
+                r.queue.setContext(mContext);
                 r.queue.processNextBroadcast(false);
             }
             trimApplications();

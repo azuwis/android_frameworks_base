@@ -39,6 +39,9 @@ import android.os.ServiceManager;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.os.SystemProperties;
+// BEGIN privacy-added
+import android.privacy.PrivacySettingsManagerService;
+// END privacy-added
 import android.provider.Settings;
 import android.server.BluetoothA2dpService;
 import android.server.BluetoothService;
@@ -224,6 +227,9 @@ class ServerThread extends Thread {
             Slog.i(TAG, "Content Manager");
             contentService = ContentService.main(context,
                     factoryTest == SystemServer.FACTORY_TEST_LOW_LEVEL);
+            // BEGIN privacy-added
+            addPrivacyService(context);
+            // END privacy-added
 
             Slog.i(TAG, "System Content Providers");
             ActivityManagerService.installSystemProviders();
@@ -975,6 +981,16 @@ class ServerThread extends Thread {
         Slog.d(TAG, "Starting service: " + intent);
         context.startService(intent);
     }
+    // BEGIN privacy-added
+    private void addPrivacyService(Context context) {
+        try {
+            Log.i(TAG, "Privacy Service");
+            ServiceManager.addService("privacy", new PrivacySettingsManagerService(context));
+        } catch (Throwable e) {
+            Log.e(TAG, "Failure starting Privacy Service", e);
+        }        
+    }
+    // END privacy-added
 }
 
 public class SystemServer {
