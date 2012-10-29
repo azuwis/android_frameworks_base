@@ -1140,4 +1140,6 @@ public interface WindowManagerPolicy {
      * @param args additional arguments to the dump request.
      */
     public void dump(String prefix, PrintWriter writer, String[] args);
+
+    public void setHideStatusBarInPortrait(boolean hide);
 }

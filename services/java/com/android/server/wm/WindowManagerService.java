@@ -5779,6 +5779,8 @@ public class WindowManagerService extends IWindowManager.Stub
         if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.NAV_BAR_AUTO_TOGGLE, 0) == 1)
             Settings.System.putInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) ? 1 : 0);
 
+        mPolicy.setHideStatusBarInPortrait(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270);
+
         mRotation = rotation;
         mAltOrientation = altOrientation;
         mPolicy.setRotationLw(mRotation);
