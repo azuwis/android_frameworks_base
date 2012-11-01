@@ -47,7 +47,7 @@ import android.util.Slog;
  */
 public abstract class KeyguardViewBase extends FrameLayout {
 
-    private static final int BACKGROUND_COLOR = 0x70000000;
+    private static final int BACKGROUND_COLOR = 0x00000000;
     private KeyguardViewCallback mCallback;
     private AudioManager mAudioManager;
     private TelephonyManager mTelephonyManager = null;

@@ -22,8 +22,19 @@
   state of the device, as well as instructions on how to get past it
   depending on the state of the device.  It is the same for landscape
   and portrait.-->
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center_horizontal">
+
+        <com.android.internal.widget.WaveView
+            android:id="@+id/unlock_widget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
 <GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -111,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="4dip" >
+        android:paddingTop="20dip" >
 
         <ImageView
             android:id="@+id/weather_image"
@@ -287,32 +298,6 @@
 
     </LinearLayout>
 
-        <com.android.internal.widget.multiwaveview.GlowPadView
-            android:id="@+id/unlock_widget"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="8dip"
-            android:paddingRight="8dip"
-            android:focusable="true"
-
-            android:targetDrawables="@array/lockscreen_targets_with_camera"
-            android:targetDescriptions="@array/lockscreen_target_descriptions_with_camera"
-            android:directionDescriptions="@array/lockscreen_direction_descriptions"
-            android:handleDrawable="@drawable/ic_lockscreen_handle"
-            android:outerRingDrawable="@drawable/ic_lockscreen_outerring"
-            android:outerRadius="@dimen/glowpadview_target_placement_radius"
-            android:innerRadius="@dimen/glowpadview_inner_radius"
-            android:snapMargin="@dimen/glowpadview_snap_margin"
-            android:feedbackCount="1"
-            android:vibrationDuration="20"
-            android:glowRadius="@dimen/glowpadview_glow_radius"
-            android:pointDrawable="@drawable/ic_lockscreen_glowdot"
-            />
-
         <TextView
             android:id="@+id/carrier"
             android:layout_width="match_parent"
@@ -356,7 +341,7 @@
         layout="@layout/keyguard_transport_control"
         android:layout_row="0"
         android:layout_column="0"
-        android:layout_rowSpan="5"
+        android:layout_rowSpan="8"
         android:layout_columnSpan="1"
         android:layout_gravity="fill"
         android:layout_width="0dip"
@@ -364,4 +349,4 @@
         />
 
 </GridLayout>
-
++</RelativeLayout>
