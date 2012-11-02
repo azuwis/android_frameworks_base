@@ -60,7 +60,7 @@ public class WaveView extends View implements ValueAnimator.AnimatorUpdateListen
     private static final long RING_DELAY = 1300; // when to start fading animated rings
     private static final long FINAL_DELAY = 200; // delay for unlock success animation
     private static final long SHORT_DELAY = 100; // for starting one animation after another.
-    private static final long RESET_TIMEOUT = 300; // elapsed time of inactivity before we reset
+    private static final long RESET_TIMEOUT = 100; // elapsed time of inactivity before we reset
 
     /**
      * The scale by which to multiply the unlock handle width to compute the radius
@@ -263,7 +263,7 @@ public class WaveView extends View implements ValueAnimator.AnimatorUpdateListen
 
             case STATE_ATTEMPTING:
                 if (DBG) Log.v(TAG, "State ATTEMPTING (fingerDown = " + fingerDown + ")");
-                if (mouseY < mLockCenterY - 55) {
+                if (mouseY < mLockCenterY) {
                     if (fingerDown) {
                         mUnlockWave.addAnimTo(0, 0, "x", mLockCenterX, true);
                         mUnlockWave.addAnimTo(0, 0, "y", mouseY - 880, true);
@@ -297,7 +297,7 @@ public class WaveView extends View implements ValueAnimator.AnimatorUpdateListen
                     mUnlockDefault.addAnimTo(0, 0, "y", mLockCenterY, true);
                     mUnlockDefault.addAnimTo(0, 0, "scaleX", 1.0f, true);
                     mUnlockDefault.addAnimTo(0, 0, "scaleY", 1.0f, true);
-                    mUnlockDefault.addAnimTo(0, 0, "alpha", 1.0f, true);
+                    mUnlockDefault.addAnimTo(0, 0, "alpha", 0.0f, true);
 
                     mUnlockHalo.addAnimTo(0, 0, "x", mouseX, true);
                     mUnlockHalo.addAnimTo(0, 0, "y", mouseY, true);
@@ -309,7 +309,7 @@ public class WaveView extends View implements ValueAnimator.AnimatorUpdateListen
 
             case STATE_UNLOCK_ATTEMPT:
                 if (DBG) Log.v(TAG, "State UNLOCK_ATTEMPT");
-                if (mouseY < mLockCenterY - 55) {
+                if (mouseY < mLockCenterY) {
 
                     mUnlockWave.addAnimTo(FINAL_DURATION, 0, "x", mLockCenterX, true);
                     mUnlockWave.addAnimTo(FINAL_DURATION, 0, "y", mLockCenterY - 1280, true);
