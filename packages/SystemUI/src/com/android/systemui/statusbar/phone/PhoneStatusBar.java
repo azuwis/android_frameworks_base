@@ -2924,4 +2924,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         public void setBounds(Rect bounds) {
         }
     }
+
+    public boolean getTracking() {
+        return mTracking;
+    }
 }

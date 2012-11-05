@@ -54,6 +54,7 @@ public class StatusBarWindowView extends FrameLayout
         mExpandHelper = new ExpandHelper(mContext, latestItems, minHeight, maxHeight);
         mExpandHelper.setEventSource(this);
         mExpandHelper.setScrollView(scroller);
+        mExpandHelper.setStatusBar(mService);
     }
 
     @Override

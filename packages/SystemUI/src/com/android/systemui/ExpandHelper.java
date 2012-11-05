@@ -32,6 +32,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 
+import com.android.systemui.statusbar.phone.PhoneStatusBar;
+
 import java.util.Stack;
 
 public class ExpandHelper implements Gefingerpoken, OnClickListener {
@@ -99,6 +101,7 @@ public class ExpandHelper implements Gefingerpoken, OnClickListener {
     private ObjectAnimator mGlowTopAnimation;
     private ObjectAnimator mGlowBottomAnimation;
     private Vibrator mVibrator;
+    private PhoneStatusBar mStatusBar;
 
     private int mSmallSize;
     private int mLargeSize;
@@ -310,6 +313,10 @@ public class ExpandHelper implements Gefingerpoken, OnClickListener {
         mScrollView = scrollView;
     }
 
+    public void setStatusBar(PhoneStatusBar statusBar) {
+        mStatusBar = statusBar;
+    }
+
     private float calculateGlow(float target, float actual) {
         // glow if overscale
         if (DEBUG_GLOW) Slog.d(TAG, "target: " + target + " actual: " + actual);
@@ -416,6 +423,10 @@ public class ExpandHelper implements Gefingerpoken, OnClickListener {
                 mHasPopped = false;
                 finishExpanding(false);
                 clearView();
+                if (isInside(mScrollView, x, y) && findView(x, y) == null) {
+                    //if (DEBUG) Slog.d(TAG, "click on blank area, findView: " + findView(x, y));
+                    if(mStatusBar != null && !mStatusBar.getTracking()) mStatusBar.animateCollapse();
+                }
                 break;
             }
             return mExpanding;
