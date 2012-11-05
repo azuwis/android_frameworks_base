@@ -84,8 +84,6 @@ public class StatusBarWindowView extends FrameLayout
                 super.onInterceptTouchEvent(ev);
         if (intercept) {
             latestItems.onInterceptTouchEvent(cancellation);
-        } else if (ev.getAction() == KeyEvent.ACTION_UP && latestItems.getChildAtPosition(ev) == null && mService.shouldDisableNavbarGestures()) {
-            mService.animateCollapse();
         }
         return intercept;
     }
