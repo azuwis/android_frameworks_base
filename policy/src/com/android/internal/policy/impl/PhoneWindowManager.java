@@ -3979,7 +3979,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             case KeyEvent.KEYCODE_VOLUME_MUTE: {
                 if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                     if (down) {
-                        if (isScreenOn && !keyguardActive && !mVolumeDownKeyTriggered
+                        if (isScreenOn && !mVolumeDownKeyTriggered
                                 && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
                             mVolumeDownKeyTriggered = true;
                             mVolumeDownKeyTime = event.getDownTime();
@@ -3995,7 +3995,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     }
                 } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                     if (down) {
-                        if (isScreenOn && !keyguardActive && !mVolumeUpKeyTriggered
+                        if (isScreenOn && !mVolumeUpKeyTriggered
                                 && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
                             mVolumeUpKeyTriggered = true;
                             mVolumeUpKeyTime = event.getDownTime();
@@ -4045,10 +4045,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         }
                     }
                 }
-                if (isMusicActive() && ((result & ACTION_PASS_TO_USER) == 0) || keyguardActive) {
-                    if (keyguardActive) {
-                        result &= ~ACTION_PASS_TO_USER;
-                    }
+                if (isMusicActive() && (result & ACTION_PASS_TO_USER) == 0) {
                     if (mVolBtnMusicControls && down && (keyCode != KeyEvent.KEYCODE_VOLUME_MUTE)) {
                         mIsLongPress = false;
                         int newKeyCode = event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
