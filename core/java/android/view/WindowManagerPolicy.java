@@ -1148,4 +1148,6 @@ public interface WindowManagerPolicy {
      * {@link android.content.Intent#ACTION_ASSIST}
      */
     public void showAssistant();
+
+    public void setHideStatusBarInPortrait(boolean hide);
 }
