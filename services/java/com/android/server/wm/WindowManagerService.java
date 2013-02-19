@@ -6136,6 +6136,9 @@ public class WindowManagerService extends IWindowManager.Stub
                 + ", forceApp=" + mForcedAppOrientation);
         }
 
+        if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.AUTO_EXPANDED_DESKTOP, 0) == 1)
+                Settings.System.putInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, mCurConfiguration.orientation == Configuration.ORIENTATION_LANDSCAPE ? 0 : 1);
+
         mRotation = rotation;
         mAltOrientation = altOrientation;
         mPolicy.setRotationLw(mRotation);
