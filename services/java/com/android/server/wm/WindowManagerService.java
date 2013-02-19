@@ -6136,8 +6136,6 @@ public class WindowManagerService extends IWindowManager.Stub
                 + ", forceApp=" + mForcedAppOrientation);
         }
 
-        mPolicy.setHideStatusBarInPortrait(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270);
-
         mRotation = rotation;
         mAltOrientation = altOrientation;
         mPolicy.setRotationLw(mRotation);
