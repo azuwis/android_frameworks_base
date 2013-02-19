@@ -2889,6 +2889,12 @@ public final class Settings {
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
 
         /**
+         * Auto expanded desktop
+         * @hide
+         */
+        public static final String AUTO_EXPANDED_DESKTOP = "auto_expanded_desktop";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
          * @hide
