@@ -440,6 +440,7 @@ public class WindowManagerService extends IWindowManager.Stub
     boolean mSystemBooted = false;
     boolean mForceDisplayEnabled = false;
     boolean mShowingBootMessages = false;
+    boolean mAutoExpanded = false;
 
     String mLastANRState;
 
@@ -6100,6 +6101,21 @@ public class WindowManagerService extends IWindowManager.Stub
                 "Rotation changed to " + rotation + (altOrientation ? " (alt)" : "")
                 + " from " + mRotation + (mAltOrientation ? " (alt)" : "")
                 + ", forceApp=" + mForcedAppOrientation);
+        }
+
+        if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.AUTO_EXPANDED_DESKTOP, 0) == 1) {
+            if (mCurConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, 0) == 0) {
+                    mAutoExpanded = true;
+                    Settings.System.putInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, 1);
+                } else {
+                    mAutoExpanded = false;
+                }
+            } else {
+                if (mAutoExpanded) {
+                    Settings.System.putInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, 0);
+                }
+            }
         }
 
         mRotation = rotation;
