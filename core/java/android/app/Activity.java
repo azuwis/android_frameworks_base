@@ -5068,8 +5068,11 @@ public class Activity extends ContextThemeWrapper
         attachBaseContext(context);
 
         mFragments.attachActivity(this, mContainer, null);
+
+        boolean floating = (intent.getFlags()&Intent.FLAG_FLOATING_WINDOW) == Intent.FLAG_FLOATING_WINDOW;
         boolean mWeWantPopups = (Settings.System.getInt(getContentResolver(), Settings.System.WE_WANT_POPUPS, 0) == 1);
-        if (intent != null && mWeWantPopups && (intent.getFlags()&Intent.FLAG_MULTI_WINDOW) == Intent.FLAG_MULTI_WINDOW) {
+
+        if ((intent != null) && floating && mWeWantPopups) {
             TypedArray styleArray = context.obtainStyledAttributes(info.theme, com.android.internal.R.styleable.Window);
             TypedValue backgroundValue = styleArray.peekValue(com.android.internal.R.styleable.Window_windowBackground);
 
