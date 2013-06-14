@@ -165,7 +165,6 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         if (alwaysUseOption) {
             final ViewGroup buttonLayout = (ViewGroup) findViewById(R.id.button_bar);
             if (buttonLayout != null) {
-                buttonLayout.setVisibility(View.VISIBLE);
                 mAlwaysButton = (Button) buttonLayout.findViewById(R.id.button_always);
                 mOnceButton = (Button) buttonLayout.findViewById(R.id.button_once);
             } else {
@@ -265,10 +264,10 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         if (mAlwaysUseOption && (!hasValidSelection || mLastSelected != checkedPos)) {
             mAlwaysButton.setEnabled(hasValidSelection);
             mOnceButton.setEnabled(hasValidSelection);
-            if (hasValidSelection) {
-                mGrid.smoothScrollToPosition(checkedPos);
-            }
             mLastSelected = checkedPos;
+            if (hasValidSelection) {
+                startSelected(position, false);
+            }
         } else {
             startSelected(position, false);
         }
@@ -656,8 +655,7 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
 
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ResolveInfo ri = mAdapter.resolveInfoForPosition(position);
-            showAppDetails(ri);
+            startSelected(position, true);
             return true;
         }
 
