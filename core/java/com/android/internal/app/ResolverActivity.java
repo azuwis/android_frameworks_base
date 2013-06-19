@@ -100,7 +100,7 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         onCreate(savedInstanceState, makeMyIntent(),
-                getResources().getText(com.android.internal.R.string.whichApplication),
+                null,
                 null, null, true);
     }
 
