@@ -278,7 +278,7 @@ public class CaptivePortalTracker extends StateMachine {
                 case CMD_DELAYED_CAPTIVE_CHECK:
                     setNotificationOff();
 
-                    if (message.arg1 == mDelayedCheckToken) {
+                    if (message.arg1 == mDelayedCheckToken && mNetworkInfo.getType() != ConnectivityManager.TYPE_MOBILE) {
                         InetAddress server = lookupHost(mServer);
                         boolean captive = server != null && isCaptivePortal(server);
                         if (captive) {
