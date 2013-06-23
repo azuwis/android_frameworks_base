@@ -2813,6 +2813,12 @@ public final class Settings {
         public static final String AUTO_EXPANDED_DESKTOP = "auto_expanded_desktop";
 
         /**
+         * Auto halo
+         * @hide
+         */
+        public static final String AUTO_HALO = "auto_halo";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
          * @hide
