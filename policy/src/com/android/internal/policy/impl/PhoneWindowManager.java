@@ -482,7 +482,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int mForcingShowNavBarLayer;
 
     int mExpandedDesktopStyle = -1;
-    private boolean mHaloActiveByExpandedDesktop = false;
+    private boolean mHaloAutoActive = false;
 
     // States of keyguard dismiss.
     private static final int DISMISS_KEYGUARD_NONE = 0; // Keyguard not being dismissed.
@@ -1443,26 +1443,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             if (expandedDesktopStyle != mExpandedDesktopStyle) {
                 mExpandedDesktopStyle = expandedDesktopStyle;
                 updateDisplayMetrics = true;
-                // if (Settings.System.getIntForUser(
-                //             mContext.getContentResolver(),
-                //             Settings.System.AUTO_HALO, 1, UserHandle.USER_CURRENT) == 1) {
-                    if (expandedDesktopStyle != 0) {
-                        if (Settings.System.getIntForUser(
-                                    mContext.getContentResolver(),
-                                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT) == 0) {
-                            mHaloActiveByExpandedDesktop = true;
-                            Settings.System.putIntForUser(mContext.getContentResolver(),
-                                    Settings.System.HALO_ACTIVE, 1, UserHandle.USER_CURRENT);
-                        } else {
-                            mHaloActiveByExpandedDesktop = false;
-                        }
-                    } else {
-                        if (mHaloActiveByExpandedDesktop) {
-                            Settings.System.putIntForUser(mContext.getContentResolver(),
-                                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT);
-                        }
-                    }
-                // }
             }
 
             // Configure rotation lock.
@@ -3575,10 +3555,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     + " top=" + mTopFullscreenOpaqueWindowState);
             if (expandedDesktopHidesStatusBar()) {
                 if (DEBUG_LAYOUT) Log.v(TAG, "Hiding status bar: expanded desktop enabled");
-                if (mStatusBar.hideLw(true)) changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                if (mStatusBar.hideLw(true)) {
+                    changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                    showHalo();
+                }
             } else if (mForceStatusBar || mForceStatusBarFromKeyguard) {
                 if (DEBUG_LAYOUT) Log.v(TAG, "Showing status bar: forced");
-                if (mStatusBar.showLw(true)) changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                if (mStatusBar.showLw(true)) {
+                    changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                    hideHalo();
+                }
             } else if (mTopFullscreenOpaqueWindowState != null) {
                 if (localLOGV) {
                     Log.d(TAG, "frame: " + mTopFullscreenOpaqueWindowState.getFrameLw()
@@ -3610,12 +3596,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                                 mStatusBarService = null;
                             }
                         }});
+                        showHalo();
                     } else if (DEBUG_LAYOUT) {
                         Log.v(TAG, "Preventing status bar from hiding by policy");
                     }
                 } else {
                     if (DEBUG_LAYOUT) Log.v(TAG, "** SHOWING status bar: top is not fullscreen");
-                    if (mStatusBar.showLw(true)) changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                    if (mStatusBar.showLw(true)) {
+                        changes |= FINISH_LAYOUT_REDO_LAYOUT;
+                        hideHalo();
+                    }
                 }
             }
         }
@@ -3685,6 +3675,25 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // update since mAllowLockscreenWhenOn might have changed
         updateLockScreenTimeout();
         return changes;
+    }
+
+    private void showHalo() {
+        if (Settings.System.getIntForUser(
+                    mContext.getContentResolver(),
+                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT) == 0) {
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    Settings.System.HALO_ACTIVE, 1, UserHandle.USER_CURRENT);
+            mHaloAutoActive = true;
+        } else {
+            mHaloAutoActive = false;
+        }
+    }
+
+    private void hideHalo() {
+        if (mHaloAutoActive) {
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT);
+        }
     }
 
     public boolean allowAppAnimationsLw() {
