@@ -482,6 +482,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int mForcingShowNavBarLayer;
 
     int mExpandedDesktopStyle = -1;
+    private boolean mHaloActiveByExpandedDesktop = false;
 
     // States of keyguard dismiss.
     private static final int DISMISS_KEYGUARD_NONE = 0; // Keyguard not being dismissed.
@@ -1442,6 +1443,26 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             if (expandedDesktopStyle != mExpandedDesktopStyle) {
                 mExpandedDesktopStyle = expandedDesktopStyle;
                 updateDisplayMetrics = true;
+                // if (Settings.System.getIntForUser(
+                //             mContext.getContentResolver(),
+                //             Settings.System.AUTO_HALO, 1, UserHandle.USER_CURRENT) == 1) {
+                    if (expandedDesktopStyle != 0) {
+                        if (Settings.System.getIntForUser(
+                                    mContext.getContentResolver(),
+                                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT) == 0) {
+                            mHaloActiveByExpandedDesktop = true;
+                            Settings.System.putIntForUser(mContext.getContentResolver(),
+                                    Settings.System.HALO_ACTIVE, 1, UserHandle.USER_CURRENT);
+                        } else {
+                            mHaloActiveByExpandedDesktop = false;
+                        }
+                    } else {
+                        if (mHaloActiveByExpandedDesktop) {
+                            Settings.System.putIntForUser(mContext.getContentResolver(),
+                                    Settings.System.HALO_ACTIVE, 0, UserHandle.USER_CURRENT);
+                        }
+                    }
+                // }
             }
 
             // Configure rotation lock.
