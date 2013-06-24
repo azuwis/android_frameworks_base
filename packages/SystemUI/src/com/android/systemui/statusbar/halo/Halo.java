@@ -892,7 +892,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         }
 
         public void sleep(long delay, int speed) {
-            final int newPos = (int)(mTickerLeft ? -mIconSize*0.8f : mScreenWidth - mIconSize*0.2f);
+            final int newPos = (int)(mTickerLeft ? -mIconSize : mScreenWidth);
             snapAnimator.animate(ObjectAnimator.ofInt(this, "haloX", newPos).setDuration(speed),
                     new DecelerateInterpolator(), null, delay, new Runnable() {
                         public void run() {
