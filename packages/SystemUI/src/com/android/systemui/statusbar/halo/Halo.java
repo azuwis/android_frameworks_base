@@ -280,16 +280,14 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         if (!mFirstStart) {
             if (mEffect.getHaloY() < 0) mEffect.setHaloY(0);
             if (mEffect.getHaloY() > mScreenHeight-mIconSize) mEffect.setHaloY(mScreenHeight-mIconSize);
-            mEffect.nap(500);
-            if (mHideTicker) mEffect.sleep(HaloEffect.SNAP_TIME + HaloEffect.NAP_TIME + 2500, HaloEffect.SLEEP_TIME);
+            mEffect.sleep(0, 0);
         } else {
             // Do the startup animations only once
             mFirstStart = false;
             updateTriggerPosition(0, mScreenHeight / 2 - mIconHalfSize);
-            mEffect.setHaloX(0);
+            mEffect.setHaloX(-mIconSize);
             mEffect.setHaloY(mScreenHeight / 2 - mIconHalfSize);
-            mEffect.nap(500);
-            if (mHideTicker) mEffect.sleep(HaloEffect.SNAP_TIME + HaloEffect.NAP_TIME + 2500, HaloEffect.SLEEP_TIME);
+            mEffect.sleep(0, 0);
         }
     }    
 
