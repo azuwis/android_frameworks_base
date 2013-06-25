@@ -317,8 +317,8 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback, TabletTi
             }
  
             if (mState == State.HIDDEN || mState == State.SILENT) {
-                mEffect.setHaloX((int)(mTickerLeft ? -mIconSize*0.8f : mScreenWidth - mIconSize*0.2f));
-                final int triggerWidth = (int)(mTickerLeft ? -mIconSize*0.7f : mScreenWidth - mIconSize*0.3f);
+                mEffect.setHaloX((int)(mTickerLeft ? -mIconSize : mScreenWidth));
+                final int triggerWidth = (int)(mTickerLeft ? -mIconSize*0.9f : mScreenWidth - mIconSize*0.1f);
                 updateTriggerPosition(triggerWidth, mEffect.mHaloY);
             } else {
                 mEffect.nap(500);
@@ -334,8 +334,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback, TabletTi
             mEffect.mHaloTextViewR.setVisibility(mTickerLeft ? View.GONE : View.VISIBLE);
             mEffect.setHaloX(msavePositionX);
             mEffect.setHaloY(msavePositionY);
-            mEffect.nap(500);
-            if (mHideTicker) mEffect.sleep(HaloEffect.SNAP_TIME + HaloEffect.NAP_TIME + 2500, HaloEffect.SLEEP_TIME, false);
+            mEffect.sleep(0, 0, false);
         }
     }
     
@@ -1005,7 +1004,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback, TabletTi
                     new DecelerateInterpolator(), null, delay, new Runnable() {
                         public void run() {
                             mState = silent ? State.SILENT : State.HIDDEN;
-                            final int triggerWidth = (int)(mTickerLeft ? -mIconSize*0.7f : mScreenWidth - mIconSize*0.3f);
+                            final int triggerWidth = (int)(mTickerLeft ? -mIconSize*0.9f : mScreenWidth - mIconSize*0.1f);
                             updateTriggerPosition(triggerWidth, mHaloY);
                         }});
         }
