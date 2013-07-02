@@ -1146,7 +1146,7 @@ public class PhoneNumberUtils
      */
     public static String formatNumber(String source) {
         SpannableStringBuilder text = new SpannableStringBuilder(source);
-        formatNumber(text, getFormatTypeForLocale(Locale.getDefault()));
+        formatNumber(text, getFormatTypeForLocale(Locale.CHINA));
         return text.toString();
     }
 
