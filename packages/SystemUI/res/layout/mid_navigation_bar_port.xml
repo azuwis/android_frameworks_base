@@ -41,7 +41,7 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_weight="0"
-        android:scaleType="fitCenter"
+        android:scaleType="center"
         systemui:glowBackground="@drawable/ic_sysbar_highlight" />
     <LinearLayout
         android:layout_height="match_parent"
@@ -59,6 +59,7 @@
             android:layout_height="match_parent"
             systemui:keyRepeat="true"
             android:layout_weight="0"
+            android:scaleType="center"
             systemui:glowBackground="@drawable/ic_sysbar_highlight" />
         <View
             android:layout_width="0dp"
@@ -70,6 +71,7 @@
             android:layout_height="match_parent"
             systemui:keyRepeat="true"
             android:layout_weight="0"
+            android:scaleType="center"
             systemui:glowBackground="@drawable/ic_sysbar_highlight" />
         <View
             android:layout_width="0dp"
@@ -81,6 +83,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             systemui:keyRepeat="true"
+            android:scaleType="center"
             systemui:glowBackground="@drawable/ic_sysbar_highlight" />
         <View
             android:layout_width="0dp"
@@ -92,6 +95,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             systemui:keyRepeat="true"
+            android:scaleType="center"
             systemui:glowBackground="@drawable/ic_sysbar_highlight" />
     </LinearLayout>
     <com.android.systemui.statusbar.policy.KeyButtonView
@@ -99,7 +103,7 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_weight="0"
-        android:scaleType="fitCenter"
+        android:scaleType="center"
         systemui:glowBackground="@drawable/ic_sysbar_highlight" />
     <com.android.systemui.statusbar.policy.KeyButtonView
         android:id="@+id/dpad_right"
