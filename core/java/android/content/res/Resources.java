@@ -23,6 +23,7 @@ import com.android.internal.util.XmlUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.ActivityThread;
 import android.content.pm.ActivityInfo;
 import android.graphics.Movie;
 import android.graphics.drawable.Drawable;
@@ -30,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable.ConstantState;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1506,6 +1508,16 @@ public class Resources {
         updateConfiguration(config, metrics, null);
     }
 
+    private Boolean shouldForceEnResource(String packageName) {
+        String notEnResource = SystemProperties.get("persist.sys.notEnResource", ":com.google.android.apps.maps:com.google.android.stardroid:");
+        return (packageName == null || !notEnResource.contains(":" + packageName + ":"));
+    }
+
+    private Boolean shouldForceEnLocale(String packageName) {
+        String enLocale = SystemProperties.get("persist.sys.enLocale", ":com.android.vending:com.android.systemui:com.android.browser:");
+        return (packageName != null && enLocale.contains(":" + packageName + ":"));
+    }
+
     /**
      * @hide
      */
@@ -1571,12 +1583,22 @@ public class Resources {
             }
             mMetrics.scaledDensity = mMetrics.density * mConfiguration.fontScale;
 
+            String packageName = ActivityThread.currentPackageName();
+
+            if (shouldForceEnLocale(packageName)) {
+                mConfiguration.locale = Locale.US;
+                Locale.setDefault(Locale.US);
+            }
+
             String locale = null;
             if (mConfiguration.locale != null) {
                 locale = mConfiguration.locale.getLanguage();
                 if (mConfiguration.locale.getCountry() != null) {
                     locale += "-" + mConfiguration.locale.getCountry();
                 }
+            }
+            if (shouldForceEnResource(packageName)) {
+                locale = "en-US";
             }
             int width, height;
             if (mMetrics.widthPixels >= mMetrics.heightPixels) {
