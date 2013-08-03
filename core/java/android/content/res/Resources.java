@@ -23,6 +23,7 @@ import com.android.internal.util.XmlUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.ActivityThread;
 import android.content.pm.ActivityInfo;
 import android.graphics.Movie;
 import android.graphics.drawable.Drawable;
@@ -30,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable.ConstantState;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1506,6 +1508,11 @@ public class Resources {
         updateConfiguration(config, metrics, null);
     }
 
+    private Boolean shouldForceCnLocale(String packageName) {
+        String forceCnLocalePackages = SystemProperties.get("persist.sys.CnLocalePackages", ":com.google.android.apps.maps:com.google.android.stardroid:com.android.contacts:com.android.providers.contacts:com.android.dialer:");
+        return (packageName != null && forceCnLocalePackages.contains(":" + packageName + ":"));
+    }
+
     /**
      * @hide
      */
@@ -1570,6 +1577,11 @@ public class Resources {
                 mMetrics.density = mConfiguration.densityDpi * DisplayMetrics.DENSITY_DEFAULT_SCALE;
             }
             mMetrics.scaledDensity = mMetrics.density * mConfiguration.fontScale;
+
+            if (shouldForceCnLocale(ActivityThread.currentPackageName())) {
+                mConfiguration.locale = Locale.CHINA;
+                Locale.setDefault(Locale.CHINA);
+            }
 
             String locale = null;
             if (mConfiguration.locale != null) {
