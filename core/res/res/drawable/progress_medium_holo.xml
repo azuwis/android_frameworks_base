@@ -15,14 +15,7 @@
  limitations under the License.
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <rotate
-             android:drawable="@drawable/spinner_48_outer_holo"
-             android:pivotX="50%"
-             android:pivotY="50%"
-             android:fromDegrees="0"
-             android:toDegrees="1080" />
-    </item>
+    <item android:drawable="@drawable/spinner_48_outer_holo" />
     <item>
         <rotate
              android:drawable="@drawable/spinner_48_inner_holo"
