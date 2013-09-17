@@ -524,7 +524,7 @@ public class TelephonyManager {
     //
     //
 
-    private static final String GOOGLE_PLAY_PKG_NAME = "com.android.vending";
+    private static final String GOOGLE_PLAY_PKG_NAME = "com.google.android.gms";
     private static final String GOOGLE_PLAY_OP_NAME = "Verizon";
     private static final String GOOGLE_PLAY_OP_NUM = "310004";
     private static final String GOOGLE_PLAY_COUNTRY = "us";
