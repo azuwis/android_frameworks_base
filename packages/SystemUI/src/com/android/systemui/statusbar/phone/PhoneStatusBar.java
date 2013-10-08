@@ -899,6 +899,13 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
     };
 
+    private final View.OnClickListener mLastAppClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            toggleLastApp();
+        }
+    };
+
     private int mShowSearchHoldoff = 0;
     private final Runnable mShowSearchPanel = new Runnable() {
         @Override
@@ -942,7 +949,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     private void prepareNavigationBarView() {
         mNavigationBarView.reorient();
         mNavigationBarView.setListeners(mRecentsClickListener,
-                mRecentsPreloadOnTouchListener, mHomeSearchActionListener);
+                mRecentsPreloadOnTouchListener, mHomeSearchActionListener, mLastAppClickListener);
         updateSearchPanel();
     }
 

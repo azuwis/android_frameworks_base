@@ -114,6 +114,7 @@ public class NavigationButtons {
     private static final String ALWAYS_MENU_STRING = "menu1";
     private static final String MENU_BIG_STRING = "menu2";
     private static final String POWER_STRING = "power";
+    private static final String LASTAPP_STRING = "lastapp";
 
     private static final String DEFAULT_SETTING_STRING = "empty|back|home|recent|empty|menu0";
 
@@ -154,6 +155,10 @@ public class NavigationButtons {
             R.string.navbar_power_button,
             R.string.accessibility_power, KeyEvent.KEYCODE_POWER, R.drawable.ic_sysbar_power,
             R.drawable.ic_sysbar_power, android.R.color.transparent, POWER_STRING);
+    public static final ButtonInfo LASTAPP = new ButtonInfo(
+            R.string.navbar_lastapp_button,
+            R.string.accessibility_lastapp, 0, R.drawable.ic_sysbar_lastapp,
+            R.drawable.ic_sysbar_lastapp, R.drawable.ic_sysbar_lastapp, LASTAPP_STRING);
 
 
     /**
@@ -172,6 +177,7 @@ public class NavigationButtons {
         temp.put(RECENT_STRING, RECENT);
         temp.put(EMPTY_STRING, EMPTY);
         temp.put(POWER_STRING, POWER);
+        temp.put(LASTAPP_STRING, LASTAPP);
         BUTTON_MAP = Collections.unmodifiableMap(temp);
     }
 

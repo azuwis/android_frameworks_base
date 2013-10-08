@@ -97,6 +97,7 @@ public class CommandQueue extends IStatusBar.Stub {
         public void showSearchPanel();
         public void hideSearchPanel();
         public void cancelPreloadRecentApps();
+        public void toggleLastApp();
         public void setNavigationIconHints(int hints);
     }
 

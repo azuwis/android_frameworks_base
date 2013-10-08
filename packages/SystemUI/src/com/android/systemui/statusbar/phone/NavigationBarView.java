@@ -75,6 +75,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private OnClickListener mRecentsClickListener;
     private OnTouchListener mRecentsPreloadListener;
     private OnTouchListener mHomeSearchActionListener;
+    private OnClickListener mLastAppClickListenr;
 
     protected IStatusBarService mBarService;
     final Display mDisplay;
@@ -155,10 +156,11 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     }
 
     /* package */ void setListeners(OnClickListener recentsClickListener,
-            OnTouchListener recentsPreloadListener, OnTouchListener homeSearchActionListener) {
+            OnTouchListener recentsPreloadListener, OnTouchListener homeSearchActionListener, OnClickListener lastAppClickListener) {
         mRecentsClickListener = recentsClickListener;
         mRecentsPreloadListener = recentsPreloadListener;
         mHomeSearchActionListener = homeSearchActionListener;
+        mLastAppClickListenr = lastAppClickListener;
     }
 
     private void removeButtonListeners() {
@@ -182,6 +184,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         View homeView = mCurrentView.findViewWithTag(NavigationButtons.HOME);
         if (homeView != null) {
             homeView.setOnTouchListener(mHomeSearchActionListener);
+        }
+        View lastAppView = mCurrentView.findViewWithTag(NavigationButtons.LASTAPP);
+        if (lastAppView != null) {
+            lastAppView.setOnClickListener(mLastAppClickListenr);
         }
     }
 
@@ -363,6 +369,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         setButtonWithTagVisibility(NavigationButtons.ALWAYS_MENU, disableRecent ? View.INVISIBLE : View.VISIBLE);
         setButtonWithTagVisibility(NavigationButtons.MENU_BIG, disableRecent ? View.INVISIBLE : View.VISIBLE);
         setButtonWithTagVisibility(NavigationButtons.SEARCH, disableRecent ? View.INVISIBLE : View.VISIBLE);
+        setButtonWithTagVisibility(NavigationButtons.LASTAPP, disableRecent ? View.INVISIBLE : View.VISIBLE);
         getSearchLight().setVisibility((disableHome && !disableSearch) ? View.VISIBLE : View.GONE);
     }
 
