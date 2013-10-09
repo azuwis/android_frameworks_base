@@ -30,13 +30,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.ContentObserver;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.UserHandle;
-import android.provider.Settings;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -64,10 +61,6 @@ public class PowerUI extends SystemUI {
     int mLowBatteryAlertCloseLevel;
     int[] mLowBatteryReminderLevels = new int[2];
 
-    private boolean mShowLowBatteryDialogWarning;
-    private boolean mShowLowBatteryNotificationWarning;
-    private boolean mPlayLowBatterySound;
-
     private static final int NOTIFICATION_ID = 10000002;
 
     AlertDialog mInvalidChargerDialog;
@@ -86,86 +79,12 @@ public class PowerUI extends SystemUI {
         mLowBatteryReminderLevels[1] = mContext.getResources().getInteger(
                 com.android.internal.R.integer.config_criticalBatteryWarningLevel);
 
-        // Register settings observer and set initial preferences
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-        setPreferences();
-
         // Register for Intent broadcasts for...
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         filter.addAction(Intent.ACTION_POWER_CONNECTED);
         filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         mContext.registerReceiver(mIntentReceiver, filter, null, mHandler);
-    }
-
-    private final class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY),
-                    false, this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            setPreferences();
-        }
-    }
-
-    /**
-     * Set battery warning preferences
-     *
-     * 0 = show dialog + play sound (default)
-     * 1 = fire notification + play sound
-     * 2 = show dialog only
-     * 3 = fire notification only
-     * 4 = play sound only
-     * 5 = none
-     *
-     */
-
-    private void setPreferences() {
-        int currentPref = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY, 0);
-
-        switch (currentPref) {
-            case 5:
-                mShowLowBatteryDialogWarning = false;
-                mShowLowBatteryNotificationWarning = false;
-                mPlayLowBatterySound = false;
-                break;
-            case 4:
-                mShowLowBatteryDialogWarning = false;
-                mShowLowBatteryNotificationWarning = false;
-                mPlayLowBatterySound = true;
-                break;
-            case 3:
-                mShowLowBatteryDialogWarning = false;
-                mShowLowBatteryNotificationWarning = true;
-                mPlayLowBatterySound = false;
-                break;
-            case 2:
-                mShowLowBatteryDialogWarning = true;
-                mShowLowBatteryNotificationWarning = false;
-                mPlayLowBatterySound = false;
-                break;
-            case 1:
-                mShowLowBatteryDialogWarning = false;
-                mShowLowBatteryNotificationWarning = true;
-                mPlayLowBatterySound = true;
-                break;
-            case 0:
-            default:
-                mShowLowBatteryDialogWarning = true;
-                mShowLowBatteryNotificationWarning = false;
-                mPlayLowBatterySound = true;
-                break;
-        }
     }
 
     /**
@@ -246,24 +165,10 @@ public class PowerUI extends SystemUI {
                         && (bucket < oldBucket || oldPlugged)
                         && mBatteryStatus != BatteryManager.BATTERY_STATUS_UNKNOWN
                         && bucket < 0) {
-
-                    if(mShowLowBatteryDialogWarning) {
-                        showLowBatteryWarning();
-                    }
-                    if(mShowLowBatteryNotificationWarning) {
-                        showLowBatteryNotificationWarning();
-                    }
-
-                    // only play SFX when the dialog comes up or the bucket changes
-                    if (mPlayLowBatterySound && (bucket != oldBucket || oldPlugged)) {
-                        playLowBatterySound();
-                    }
+                    showLowBatteryNotificationWarning();
 
                 } else if (plugged || (bucket > oldBucket && bucket > 0)) {
-                    dismissLowBatteryWarning();
                     dismissLowBatteryNotificationWarning();
-                } else if (mShowLowBatteryDialogWarning && mBatteryLevelTextView != null) {
-                    showLowBatteryWarning();
                 }
             } else if (action.equals(Intent.ACTION_POWER_CONNECTED)
                     || action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
