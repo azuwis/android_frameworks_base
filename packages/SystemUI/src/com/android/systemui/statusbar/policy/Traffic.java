@@ -254,7 +254,7 @@ public class Traffic extends TextView {
         ContentResolver resolver = mContext.getContentResolver();
 
         trafficMeterEnable = (Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_TRAFFIC, 0) == 1);
+                Settings.System.STATUS_BAR_TRAFFIC, 1) == 1);
 
         if (trafficMeterEnable && getConnectAvailable()) {
             setVisibility(View.VISIBLE);
