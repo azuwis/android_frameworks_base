@@ -54,6 +54,9 @@ public class MediaActionSound {
     };
 
     private static final String TAG = "MediaActionSound";
+
+    private static final String PROP_CAMERA_SOUND = "persist.sys.camera-sound";
+
     /**
      * The sound used by
      * {@link android.hardware.Camera#takePicture Camera.takePicture} to
