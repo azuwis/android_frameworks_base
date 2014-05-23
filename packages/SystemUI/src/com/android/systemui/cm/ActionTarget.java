@@ -41,6 +41,7 @@ import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.InputDevice;
@@ -179,6 +180,14 @@ public class ActionTarget {
         } else if (action.equals(ACTION_TORCH)) {
             Intent intent = new Intent(TorchConstants.ACTION_TOGGLE_STATE);
             mContext.sendBroadcast(intent);
+            return true;
+        } else if (action.equals(ACTION_EXPAND)) {
+            boolean mEnabled;
+            mEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.EXPANDED_DESKTOP_STATE, 0, UserHandle.USER_CURRENT) == 1;
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    Settings.System.EXPANDED_DESKTOP_STATE, mEnabled ? 0 : 1,
+                    UserHandle.USER_CURRENT);
             return true;
         } else {
             try {

@@ -141,6 +141,8 @@ public class NavigationRingHelpers {
             resourceId = getTorchDrawableResId(context);
         } else if (action.equals(ACTION_ASSIST)) {
             resourceId = com.android.internal.R.drawable.ic_action_assist_generic;
+        } else if (action.equals(ACTION_EXPAND)) {
+            resourceId = com.android.internal.R.drawable.ic_action_assist_generic;
         }
 
         if (resourceId < 0) {
