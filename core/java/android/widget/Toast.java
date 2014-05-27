@@ -19,6 +19,7 @@ package android.widget;
 import android.app.INotificationManager;
 import android.app.ITransientNotification;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
@@ -33,6 +34,9 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.GridLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /**
  * A toast is a view containing a quick little message for the user.  The toast class
@@ -245,6 +249,35 @@ public class Toast {
         View v = inflate.inflate(com.android.internal.R.layout.transient_notification, null);
         TextView tv = (TextView)v.findViewById(com.android.internal.R.id.message);
         tv.setText(text);
+
+        try {
+            String packageName = context.getPackageName();
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+
+            tv.setLayoutParams(params);
+
+            PackageManager pm = context.getPackageManager();
+
+            ImageView imageView = new ImageView(context);
+            imageView.setMaxHeight(tv.getHeight() + 128);
+            imageView.setMaxWidth(tv.getHeight() + 128);
+            imageView.setAdjustViewBounds(true);
+            imageView.setImageDrawable(pm.getApplicationIcon(packageName));
+            LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params1.gravity = Gravity.CENTER;
+            params1.rightMargin = 10;
+            imageView.setLayoutParams(params1);
+
+            LinearLayout layout = (LinearLayout)v;
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            layout.addView(imageView, 0);
+        } catch (android.content.pm.PackageManager.NameNotFoundException e) {
+            // Empty
+        }
         
         result.mNextView = v;
         result.mDuration = duration;
