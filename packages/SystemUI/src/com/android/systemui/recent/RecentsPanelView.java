@@ -733,6 +733,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             am.moveTaskToFront(ad.taskId, ActivityManager.MOVE_TASK_WITH_HOME,
                     opts);
         } else {
+            RecentsActivity mRecentsActivity = (RecentsActivity) context;
             boolean backPressed = mRecentsActivity != null && mRecentsActivity.mBackPressed;
             if (!floating || !backPressed) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
