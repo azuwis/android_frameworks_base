@@ -28,7 +28,6 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
-import android.util.SettingConfirmationHelper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -245,23 +244,6 @@ public class RecentsHorizontalScrollView extends HorizontalScrollView
         // We do this so the underlying ScrollView knows that it won't get
         // the chance to intercept events anymore
         requestDisallowInterceptTouchEvent(true);
-
-        final Context context = getContext();
-        SettingConfirmationHelper.showConfirmationDialogForSetting(
-            context,
-            context.getString(R.string.recents_swipe_floating_title),
-            context.getString(R.string.recents_swipe_floating_message_landscape),
-            context.getResources().getDrawable(R.drawable.recents_swipe_floating_landscape),
-            Settings.System.RECENTS_SWIPE_FLOATING,
-            new SettingConfirmationHelper.OnSelectListener() {
-                @Override
-                public void onSelect(boolean enabled) {
-                    if (enabled){
-                        mSwipeHelper.setTriggerEnabled(true);
-                        mSwipeHelper.setTriggerDirection(SwipeHelper.DOWN);
-                    }
-                }
-            });
     }
 
     public void onDragCancelled(View v) {

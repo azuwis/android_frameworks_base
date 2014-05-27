@@ -926,8 +926,6 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                     } else {
                         throw new IllegalStateException("Oops, no tag on view " + selectedView);
                     }
-                } else if (item.getItemId() == R.id.recent_launch_floating) {
-                    launchFloating(selectedView);
                 } else {
                     return false;
                 }
