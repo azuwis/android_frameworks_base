@@ -156,9 +156,6 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
     };
 
-    // Notification peek
-    protected NotificationPeek mNotificationPeek;
-
     // Notification helper
     protected NotificationHelper mNotificationHelper;
 
@@ -321,8 +318,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         mStatusBarContainer = new FrameLayout(mContext);
 
-        mNotificationPeek = new NotificationPeek(this, mContext);
-
         mPeek = new Peek(this, mContext);
         mNotificationHelper = new NotificationHelper(this, mContext);
 
@@ -404,51 +399,6 @@ public abstract class BaseStatusBar extends SystemUI implements
         if(mPowerManager == null) mPowerManager
                 = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         return mPowerManager;
-    }
-
-    public void toggleOrientationListener(boolean enable) {
-        if (mOrientationListener == null) {
-            if (!enable) {
-                // Do nothing if listener has already dropped
-                return;
-            } else {
-                ContentResolver resolver = mContext.getContentResolver();
-                boolean shouldEnable = Settings.System.getIntForUser(resolver,
-                        Settings.System.IMMERSIVE_MODE, 0, UserHandle.USER_CURRENT) != 0 &&
-                        Settings.System.getIntForUser(resolver,
-                        Settings.System.PIE_STATE, 0, UserHandle.USER_CURRENT) == 1;
-                if (shouldEnable) {
-                    // Re-init Orientation listener for later action
-                    getOrientationListener();
-                } else {
-                    return;
-                }
-            }
-        }
-
-        if (enable && mPowerManager.isScreenOn()) {
-            mOrientationListener.enable();
-        } else {
-            mOrientationListener.disable();
-            // if it has been disabled, then don't leave it to
-            // prevent called from PhoneWindowManager
-            mOrientationListener = null;
-        }
-    }
-
-    private void getOrientationListener() {
-        if (mOrientationListener == null)
-            mOrientationListener = new OrientationEventListener(mContext,
-                    SensorManager.SENSOR_DELAY_NORMAL) {
-                @Override
-                public void onOrientationChanged(int orientation) {
-                    int rotation = mDisplay.getRotation();
-                    if (rotation != mOrientation) {
-                        if (mPieController != null) mPieController.detachPie();
-                        mOrientation = rotation;
-                    }
-                }
-            };
     }
 
     public void userSwitched(int newUserId) {
@@ -949,7 +899,12 @@ public abstract class BaseStatusBar extends SystemUI implements
             } catch (RemoteException e) {
             }
 
-            if (mIntent != null) {
+            //int flags = Intent.FLAG_FLOATING_WINDOW | Intent.FLAG_ACTIVITY_CLEAR_TASK;
+            if (mPile.launchNextNotificationFloating()) {
+                if (mIntent != null) {
+                    launchFloating(mIntent);
+                }
+            } else if (mIntent != null) {
                 int[] pos = new int[2];
                 v.getLocationOnScreen(pos);
                 Intent overlay = new Intent();
