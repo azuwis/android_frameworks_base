@@ -616,13 +616,14 @@ public class TelephonyManager {
             return false;
         }
         if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.UNLOCK_GOOGLE_PLAY, 0) == 1) {
-            String flatGooglePlayPackage = Settings.System.getString(mContext.getContentResolver(), Settings.System.GOOGLE_PLAY_PACKAGE);
-            if (flatGooglePlayPackage == null) {
-                flatGooglePlayPackage = GOOGLE_PLAY_PKG_DEFAULT;
-            }
-            Set<String> googlePlayPackage = new HashSet<String>(Arrays.asList(flatGooglePlayPackage.split("\\|")));
+            // String flatGooglePlayPackage = Settings.System.getString(mContext.getContentResolver(), Settings.System.GOOGLE_PLAY_PACKAGE);
+            // if (flatGooglePlayPackage == null) {
+            //     flatGooglePlayPackage = GOOGLE_PLAY_PKG_DEFAULT;
+            // }
+            // Set<String> googlePlayPackage = new HashSet<String>(Arrays.asList(flatGooglePlayPackage.split("\\|")));
             String packageName = mContext.getPackageName();
-            boolean result = googlePlayPackage.contains(packageName);
+            // boolean result = googlePlayPackage.contains(packageName);
+            boolean result = GOOGLE_PLAY_PKG_DEFAULT.equals(packageName);
             //Rlog.d(TAG, "shouldUnlockGooglePlay " + packageName + " " + result);
             return result;
         }
