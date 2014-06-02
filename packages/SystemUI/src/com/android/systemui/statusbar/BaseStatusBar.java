@@ -483,7 +483,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private void launchFloating(PendingIntent pIntent) {
         Intent overlay = new Intent();
-        overlay.addFlags(Intent.FLAG_FLOATING_WINDOW | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overlay.addFlags(Intent.FLAG_FLOATING_WINDOW);
         try {
             ActivityManagerNative.getDefault().resumeAppSwitches();
             ActivityManagerNative.getDefault().dismissKeyguardOnNextActivity();

@@ -806,6 +806,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                 public void run() {
                     Intent intent = ad.intent;
                     intent.setFlags(Intent.FLAG_FLOATING_WINDOW
+                            | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+                            | Intent.FLAG_ACTIVITY_TASK_ON_HOME
                             | Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
